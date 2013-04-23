@@ -6,7 +6,7 @@
  
 -SUBDIRS =	named rndc dig dnssec tests tools nsupdate \
 +SUBDIRS =	named rndc dig dnssec tools nsupdate \
- 		check confgen @PKCS11_TOOLS@
+ 		check confgen @PYTHON_TOOLS@ @PKCS11_TOOLS@
  TARGETS =
  
 --- a/lib/Makefile.in
