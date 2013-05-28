@@ -1,5 +1,5 @@
 #
-# Copyright (C) 2011 OpenWrt.org
+# Copyright (C) 2013 OpenWrt.org
 #
 # This is free software, licensed under the GNU General Public License v2.
 # See /LICENSE for more information.
@@ -10,10 +10,10 @@ include $(TOPDIR)/rules.mk
 PKG_NAME:=asterisk18-chan-sccp-b
 PKG_REV=3004
 PKG_VERSION:=r$(PKG_REV)
-PKG_RELEASE:=1
+PKG_RELEASE:=2
 
 PKG_SOURCE:=$(PKG_NAME)-$(PKG_VERSION).tar.gz
-PKG_SOURCE_URL:=https://chan-sccp-b.svn.sourceforge.net/svnroot/chan-sccp-b/trunk
+PKG_SOURCE_URL:=http://svn.code.sf.net/p/chan-sccp-b/code/trunk
 PKG_SOURCE_SUBDIR:=$(PKG_NAME)-$(PKG_VERSION)
 PKG_SOURCE_VERSION:=$(PKG_REV)
 PKG_SOURCE_PROTO:=svn
@@ -25,9 +25,8 @@ define Package/asterisk18-chan-sccp-b
   SECTION:=net
   CATEGORY:=Network
   TITLE:=SCCP channel provider for asterisk
-  URL:=http://chan-sccp-b.net.sourceforge.net/
-  MAINTAINER:=Hans Zandbelt <hans.zandbelt@gmail.com>
-  DEPENDS:=+asterisk18 +libltdl
+  URL:=http://chan-sccp-b.sourceforge.net/
+  DEPENDS:= asterisk18 +libltdl
 endef
 
 define Package/asterisk18-chan-sccp-b/description
