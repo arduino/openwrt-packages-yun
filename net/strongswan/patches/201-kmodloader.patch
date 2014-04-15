@@ -5,7 +5,7 @@
  		if (stat(PROC_MODULES, &stb) == 0)
  		{
 -			ignore_result(system("modprobe -qv af_key"));
-+			ignore_result(system("insmod -qv af_key"));
++			ignore_result(system("modprobe af_key 2>&1 >/dev/null"));
  		}
  
  		/* now test again */
@@ -18,11 +18,11 @@
 -		ignore_result(system("modprobe -qv ipcomp"));
 -		ignore_result(system("modprobe -qv xfrm4_tunnel"));
 -		ignore_result(system("modprobe -qv xfrm_user"));
-+		ignore_result(system("insmod -qv ah4"));
-+		ignore_result(system("insmod -qv esp4"));
-+		ignore_result(system("insmod -qv ipcomp"));
-+		ignore_result(system("insmod -qv xfrm4_tunnel"));
-+		ignore_result(system("insmod -qv xfrm_user"));
++		ignore_result(system("modprobe ah4 2>&1 >/dev/null"));
++		ignore_result(system("modprobe esp4 2>&1 >/dev/null"));
++		ignore_result(system("modprobe ipcomp 2>&1 >/dev/null"));
++		ignore_result(system("modprobe xfrm4_tunnel 2>&1 >/dev/null"));
++		ignore_result(system("modprobe xfrm_user 2>&1 >/dev/null"));
  	}
  
  	DBG2(DBG_APP, "found netkey IPsec stack");
