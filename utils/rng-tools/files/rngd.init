@@ -1,7 +1,7 @@
 #!/bin/sh /etc/rc.common
 # Copyright (C) 2011 OpenWrt.org
 
-START=98
+START=48
 
 RNGD_INTERVAL=30
 RNGD_AMOUNT=4000
