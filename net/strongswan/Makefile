@@ -316,12 +316,21 @@ define BuildPlugin
     DEPENDS:= +strongswan $(3)
   endef
 
+  strongswan_mod_conf=$(wildcard $(PKG_INSTALL_DIR)/etc/strongswan.d/charon/$(1).conf)
   define Package/strongswan-mod-$(1)/install
+	$(INSTALL_DIR) $$(1)/etc/strongswan.d/charon
+	$(if $(call strongswan_mod_conf,$(1)), \
+		$(INSTALL_DATA) \
+			$(call strongswan_mod_conf,$(1)) \
+			$$(1)/etc/strongswan.d/charon/ \
+	)
 	$(INSTALL_DIR) $$(1)/usr/lib/ipsec/plugins
 	$(CP) $(PKG_INSTALL_DIR)/usr/lib/ipsec/plugins/libstrongswan-$(1).so \
 		$$(1)/usr/lib/ipsec/plugins/
 	$(call Plugin/$(1)/install,$$(1))
   endef
+
+  Package/strongswan-mod-$(1)/conffiles=$(patsubst $(PKG_INSTALL_DIR)%,%,$(call strongswan_mod_conf,$(1)))
 
   $$(eval $$(call BuildPackage,strongswan-mod-$(1)))
 endef
