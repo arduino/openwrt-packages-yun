@@ -10,4 +10,4 @@ Just as the main repository, this one is a fork of the [official OpenWrt one](ht
 
 ## What you can do with this repo
 
-If you wish to contribute to the list of available packages, please consider forking this repo, changing the url on [feeds.conf.default](https://github.com/arduino/openwrt-yun/blob/master/feeds.conf.default#L1) to point to your fork and share your work with the community
+If you wish to contribute to the list of available packages, please consider forking this repo. Change the url on [feeds.conf.default](https://github.com/arduino/openwrt-yun/blob/master/feeds.conf.default#L1) to point to your fork, play with it and once you ready, share your work with the community by opening a pull request
