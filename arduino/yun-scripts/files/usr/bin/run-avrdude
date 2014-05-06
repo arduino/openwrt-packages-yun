@@ -1,4 +1,4 @@
-#! /bin/sh
+#!/bin/sh
 
 echo 1 > /sys/class/gpio/gpio21/value
 echo "checking value of efuse"; avrdude  -q -q -c linuxgpio -C /etc/avrdude.conf -p m32u4 -U efuse:r:/tmp/efuse:d; read efuse</tmp/efuse; rm /tmp/efuse 
