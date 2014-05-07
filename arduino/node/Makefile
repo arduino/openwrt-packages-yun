@@ -17,7 +17,7 @@ PKG_MD5SUM:=87768be7065d2120e71619948ab4bb2d
 
 PKG_BUILD_PARALLEL:=1
 PKG_BUILD_DEPENDS:=v8m-rb
-PKG_V8_VERSION:=3.12.14-git
+PKG_V8_VERSION:=3.14.5-git
 
 include $(INCLUDE_DIR)/package.mk
 
@@ -40,7 +40,7 @@ define Build/Configure
 	CXX="$(TOOLCHAIN_DIR)/bin/mips-openwrt-linux-g++" \
 	AR="$(TOOLCHAIN_DIR)/bin/mips-openwrt-linux-ar" \
 	RANLIB="$(TOOLCHAIN_DIR)/bin/mips-openwrt-linux-ranlib" \
-	LD="$(TOOLCHAIN_DIR)/bin/mips-openwrt-linux-ld" \
+	LD="$(TOOLCHAIN_DIR)/bin/mips-openwrt-linux-g++" \
 	LINK="$(TOOLCHAIN_DIR)/bin/mips-openwrt-linux-g++" \
 	PATH="/usr/bin/:$(PATH)" \
 	GYPFLAGS="-Dv8_use_mips_abi_hardfloat=false -Dv8_can_use_fpu_instructions=false" \
@@ -54,7 +54,7 @@ define Build/Compile
 	CXX="$(TOOLCHAIN_DIR)/bin/mips-openwrt-linux-g++" \
 	AR="$(TOOLCHAIN_DIR)/bin/mips-openwrt-linux-ar" \
 	RANLIB="$(TOOLCHAIN_DIR)/bin/mips-openwrt-linux-ranlib" \
-	LD="$(TOOLCHAIN_DIR)/bin/mips-openwrt-linux-ld" \
+	LD="$(TOOLCHAIN_DIR)/bin/mips-openwrt-linux-g++" \
 	LINK="$(TOOLCHAIN_DIR)/bin/mips-openwrt-linux-g++" \
 	PATH="/usr/bin/:$(PATH)" \
 	GYPFLAGS="-Dv8_use_mips_abi_hardfloat=false -Dv8_can_use_fpu_instructions=false" \
