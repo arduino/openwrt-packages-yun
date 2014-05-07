@@ -1,0 +1,11 @@
+--- cwiid-0.6.00/libcwiid/bluetooth.c	2014-05-09 14:44:34.037989886 +0200
++++ cwiid-0.6.00/libcwiid/bluetooth.c	2014-05-09 14:44:55.697988821 +0200
+@@ -122,7 +122,7 @@
+ 		}
+ 
+ 		/* timeout (10000) in milliseconds */
+-		if (hci_remote_name(sock, &dev_list[i].bdaddr, BT_NAME_LEN,
++		if (hci_read_remote_name(sock, &dev_list[i].bdaddr, BT_NAME_LEN,
+ 		                    (*bdinfo)[bdinfo_count].name, 10000)) {
+ 			cwiid_err(NULL, "Bluetooth name read error");
+ 			err = 1;
