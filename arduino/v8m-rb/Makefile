@@ -8,15 +8,14 @@
 include $(TOPDIR)/rules.mk
 
 PKG_NAME:=v8m-rb
-PKG_VERSION:=3.12.14-git
+PKG_VERSION:=3.14.5-git
 PKG_RELEASE:=1
 
 PKG_SOURCE_PROTO:=git
 PKG_SOURCE_URL:=https://github.com/paul99/v8m-rb.git
-PKG_SOURCE_VERSION:=90a7f7b10aa2dc8a3a7f65f6092d68bffd729243
+PKG_SOURCE_VERSION:=85657c5cddfa73d8fd8dafbd78c829c2d51fab4b
 PKG_SOURCE_SUBDIR:=$(PKG_NAME)-$(PKG_VERSION)
 PKG_SOURCE:=$(PKG_NAME)-$(PKG_VERSION)-$(PKG_SOURCE_VERSION).tar.gz
-PKG_MIRROR_MD5SUM:=66a728a3cb8dad0e3773035c4049eb5f
 
 PKG_BUILD_PARALLEL:=1
 
@@ -44,7 +43,7 @@ define Build/Compile
 	CXX="$(TOOLCHAIN_DIR)/bin/mips-openwrt-linux-g++" \
 	AR="$(TOOLCHAIN_DIR)/bin/mips-openwrt-linux-ar" \
 	RANLIB="$(TOOLCHAIN_DIR)/bin/mips-openwrt-linux-ranlib" \
-	LD="$(TOOLCHAIN_DIR)/bin/mips-openwrt-linux-ld" \
+	LD="$(TOOLCHAIN_DIR)/bin/mips-openwrt-linux-g++" \
 	LINK="$(TOOLCHAIN_DIR)/bin/mips-openwrt-linux-g++" \
 	PATH="/usr/bin/:$(PATH)" \
 	GYPFLAGS="-Dv8_use_mips_abi_hardfloat=false -Dv8_can_use_fpu_instructions=false" \
