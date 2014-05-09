@@ -8,12 +8,12 @@
 include $(TOPDIR)/rules.mk
 
 PKG_NAME:=cpu-mcu-bridge
-PKG_VERSION:=1.3.0
+PKG_VERSION:=1.4.0
 PKG_RELEASE:=1
 
 PKG_SOURCE:=$(PKG_NAME)-$(PKG_VERSION).tar.bz2
 PKG_SOURCE_URL:=http://downloads.arduino.cc/
-PKG_MD5SUM:=903dbf6f717033752393fd0922db31f6
+PKG_MD5SUM:=9d2e8cb704ecfecf0b8fbc0d3c6ef6c6
 
 include $(INCLUDE_DIR)/package.mk
 
