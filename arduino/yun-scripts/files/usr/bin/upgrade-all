@@ -1,6 +1,6 @@
 #!/bin/sh
 
-has_sd=`mount | grep ^/dev/sda | grep 'on /overlay'`
+mount | grep ^/dev/sda | grep 'on /overlay' &> /dev/null
 
 if [ $? -ne 0 ]
 then
