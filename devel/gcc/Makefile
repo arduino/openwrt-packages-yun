@@ -120,4 +120,3 @@ endef
 #endef
 
 $(eval $(call BuildPackage,gcc))
-
