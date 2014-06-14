@@ -6,27 +6,24 @@
 #
 include $(TOPDIR)/rules.mk
 PKG_NAME:=gcc
-PKG_VERSION:=$(strip $(subst ",, $(CONFIG_GCC_VERSION)))#"))
+PKG_VERSION:=4.6.2
 PKG_RELEASE:=1
-PATCH_DIR=$(TOPDIR)/toolchain/gcc/patches/$(PKG_VERSION)
+PATCH_DIR=$(TOPDIR)/package/gcc/patches/
 PKG_SOURCE_URL:=ftp://ftp.fu-berlin.de/unix/languages/gcc/releases/gcc-$(PKG_VERSION) \
-    http://mirrors.rcn.net/pub/sourceware/gcc/releases/gcc-$(PKG_VERSION) \
-	    ftp://ftp.gnu.org/gnu/gcc/releases/gcc-$(PKG_VERSION)
+	http://www.netgull.com/gcc/releases/gcc-$(PKG_VERSION) \
+	ftp://ftp.gnu.org/gnu/gcc/gcc-$(PKG_VERSION)
 
 PKG_SOURCE:=$(PKG_NAME)-$(PKG_VERSION).tar.bz2
-PKG_MD5SUM:=354853e0b2da90c527e35aabb8d6f1e6
+PKG_MD5SUM:=028115c4fbfb6cfd75d6369f4a90d87e
+PKG_BUILD_DIR := $(BUILD_DIR)/$(PKG_NAME)-$(PKG_VERSION)
 
 include $(INCLUDE_DIR)/package.mk
-
-SEP:=,
-TARGET_LANGUAGES:="c$(if $(CONFIG_INSTALL_LIBSTDCPP),$(SEP)c++)$(if $(CONFIG_INSTALL_LIBGCJ),$(SEP)java)"
-EXTRA_TARGET=$(if $(CONFIG_EXTRA_TARGET_ARCH),--enable-biarch --enable-targets=$(call qstrip,$(CONFIG_EXTRA_TARGET_ARCH_NAME))-linux-uclibc)
-
+RSTRIP := true
 define Package/gcc
   SECTION:=devel
   CATEGORY:=Development
-  TITLE:=gcc
-  DEPENDS:=@TARGET_x86 @NO_STRIP
+  TITLE:=native gcc
+  DEPENDS:= +libpthread @NO_STRIP
 endef
 
 define Package/gcc/description
@@ -35,56 +32,92 @@ endef
 
 define Build/Prepare
 	$(call Build/Prepare/Default)
-	$(SED) 's,\(version_string.. = "[0-9\.]*\).*\(";\),\1 (OpenWrt-2.0)\2,' $(PKG_BUILD_DIR)/gcc/version.c
-	$(SED) 's,\(bug_report_url.. = "\).*\(";\),\1<URL:https://dev.openwrt.org/>\2,' $(PKG_BUILD_DIR)/gcc/version.c
-	(cd $(PKG_BUILD_DIR)/libstdc++-v3; autoconf;);
-	$(SED) 's,gcc_no_link=yes,gcc_no_link=no,' $(PKG_BUILD_DIR)/libstdc++-v3/configure
+# This should really be done in the toolchain installation, not here.
+	ln -sf $(STAGING_DIR)/bin/mips-openwrt-linux-gcc  \
+		$(STAGING_DIR)/bin/mips-openwrt-linux-cc
+	cd $(PKG_BUILD_DIR);$(PKG_BUILD_DIR)/contrib/download_prerequisites
+# Since OpenWrt has already applied patches we have to do this one ourself
+	cd $(PKG_BUILD_DIR)/mpfr-2.4.2;cp $(TOPDIR)/package/gcc/mpfrpatch ./mpfrpatch;patch mpfr-longlong.h < mpfrpatch
+
+endef
+#	rm -rf $(BUILD_DIR)/gccObjdir
+#	mkdir $(BUILD_DIR)/gccObjdir
+
+define Build/Configure	
+#TODO change this to use OpenWrt's normal configure procedure	
+	(mkdir $(PKG_BUILD_DIR)/../$(PKG_NAME)-$(PKG_VERSION)objdir;cd $(PKG_BUILD_DIR)/../$(PKG_NAME)-$(PKG_VERSION)objdir;CFLAGS="-g -O2";CFLAGS_FOR_TARGET="-g -O2";../$(PKG_NAME)-$(PKG_VERSION)/configure \
+		--host=mips-openwrt-linux-uclibc \
+		--target=mips-openwrt-linux-uclibc \
+		--prefix="$(STAGING_DIR)/nativeGcc" \
+		--disable-subdir-texinfo MAKEINFO=missing \
+		--disable-decimal-float \
+		--disable-libquadmath \
+		--disable-lto \
+		--enable-languages=c,c++ );
 endef
 
-define Build/Configure
-	(cd $(PKG_BUILD_DIR); rm -f config.cache; \
-		SHELL="$(BASH)" \
-		$(TARGET_CONFIGURE_OPTS) \
-		$(PKG_BUILD_DIR)/configure \
-			$(TARGET_CONFIGURE_ARGS) \
-			--build=$(GNU_HOST_NAME) \
-			--host=$(REAL_GNU_TARGET_NAME) \
-			--target=$(REAL_GNU_TARGET_NAME) \
-			--enable-languages=$(TARGET_LANGUAGES) \
-			--enable-shared \
-			--disable-__cxa_atexit \
-			--enable-target-optspace \
-			--with-gnu-ld \
-			--disable-nls \
-			--disable-libmudflap \
-			--disable-multilib \
-			$(EXTRA_TARGET) \
-			$(SOFT_FLOAT_CONFIG_OPTION) \
-			$(call qstrip,$(CONFIG_EXTRA_GCC_CONFIG_OPTIONS)) \
-	);
-endef
 
 define Build/Compile
-	export SHELL="$(BASH)"; $(MAKE_VARS) $(MAKE) -C $(PKG_BUILD_DIR) \
-			DESTDIR="$(PKG_INSTALL_DIR)" $(MAKE_ARGS) all install
-	# Set up the symlinks to enable lying about target name.
-	set -e; \
-	(cd $(TOOLCHAIN_DIR); \
-		ln -sf $(REAL_GNU_TARGET_NAME) $(GNU_TARGET_NAME); \
-		cd bin; \
-		for app in $(REAL_GNU_TARGET_NAME)-* ; do \
-			ln -sf $$$${app} \
-			$(GNU_TARGET_NAME)$$$${app##$(REAL_GNU_TARGET_NAME)}; \
-		done; \
-	);
+	cd $(PKG_BUILD_DIR)/../$(PKG_NAME)-$(PKG_VERSION)objdir;\
+		env -i - PATH=$(PATH) STAGING_DIR=$(STAGING_DIR) make -j 7 V=s;\
+		make -j 7 V=s install
+		
+#		DESTDIR="$(PKG_INSTALL_DIR)" $(MAKE_ARGS) all install
 endef
+#		env -i - PATH=$(PATH) STAGING_DIR=$(STAGING_DIR) make -j 7 V=s install
 
 define Package/gcc/install
 	$(INSTALL_DIR) $(1)/usr/lib/
-	cp -r $(PKG_INSTALL_DIR)/* $(1)
-	cp -r $(TOOLCHAIN_DIR)/include $(1)/usr/
-	cp $(TOOLCHAIN_DIR)/lib/crt* $(1)/usr/lib/
-	cp $(TOOLCHAIN_DIR)/lib/libc.so $(1)/usr/lib/
+	$(INSTALL_DIR) $(1)/usr/bin/
+	$(INSTALL_DIR) $(1)/usr/libexec/
+	$(INSTALL_DIR) $(1)/usr/include/
+	(cd $(STAGING_DIR)/nativeGcc/lib/gcc/mips-openwrt-linux-uclibc/4.6.2/;\
+	ln -s -f ../4.6.3/crtbegin.o crtbegin.o;\
+	ln -s -f ../4.6.3/crtbeginS.o crtbeginS.o;\
+	ln -s -f ../4.6.3/crtbeginT.o crtbeginT.o;\
+	ln -s -f ../4.6.3/crtend.o crtend.o;\
+	ln -s -f ../4.6.3/crtendS.o crtendS.o;\
+	ln -s -f ../4.6.3/crtfastmath.o crtfastmath.o;\
+	ln -s -f ../4.6.3/libgcc.a libgcc.a;\
+	ln -s -f ../4.6.3/libgcc_eh.a libgcc_eh.a;\
+	ln -s -f ../4.6.3/libgcov.a libgcov.a);
+	
+
+	cp -r $(STAGING_DIR)/nativeGcc/bin/* $(1)/usr/bin/
+	find $(TOOLCHAIN_DIR)/lib/ -maxdepth 1 -type f | xargs -I {} cp {} $(1)/usr/lib/
+	cp -r $(STAGING_DIR)/nativeGcc/libexec/* $(1)/usr/libexec/
+	cp -r $(STAGING_DIR)/nativeGcc/lib/* $(1)/usr/lib/
+	cp -r $(TOPDIR)/staging_dir/toolchain-mips_r2_gcc-4.6-linaro_uClibc-0.9.33.2/lib/* $(1)/usr/lib/
+	cp $(TOPDIR)/build_dir/toolchain-mips_r2_gcc-4.6-linaro_uClibc-0.9.33.2/gcc-linaro-4.6-2012.02/fixincludes/tests/base/stdio.h $(1)/usr/include/
+
 endef
 
+#	cp $(TOOLCHAIN_DIR)/lib/* $(1)/usr/lib/
+
+
+#	--prefix="$(PKG_INSTALL_DIR)" \
+
+#	for i in $(TOOLCHAIN_DIR)/4.6.3/*.o $(TOOLCHAIN_DIR)/4.6.3/*.a;\
+#	do;\
+#	ln -s $i .;\
+#	done
+#define Package/gcc/install
+#	$(INSTALL_DIR) $(1)/usr/lib/
+#	cp -r $(PKG_INSTALL_DIR)/* $(1)
+#	cp -r $(TOOLCHAIN_DIR)/include $(1)/usr/
+#	cp $(TOOLCHAIN_DIR)/lib/crt* $(1)/usr/lib/
+#	cp $(TOOLCHAIN_DIR)/lib/libc.so $(1)/usr/lib/
+#endef
+
+#define Package/gcc/install
+#	$(INSTALL_DIR) $(1)/usr/bin/
+#	$(INSTALL_DIR) $(1)/usr/lib/
+#	$(INSTALL_DIR) $(1)/usr/libexec/
+#	$(INSTALL_DIR) $(1)/usr/include/
+#	$(INSTALL_DIR) $(1)/usr/include/test
+#	cp $(HOME)/gccforYun/usr/bin/* $(1)/usr/bin/
+#	echo $(INSTALL_DIR)
+#endef
+
 $(eval $(call BuildPackage,gcc))
+
