@@ -1,0 +1,7 @@
+--- a/libstdc++-v3/include/c_compatibility/fenv.h
++++ b/libstdc++-v3/include/c_compatibility/fenv.h
+
+36c36
+< # include_next <fenv.h>
+---
+> //# include_next <fenv.h>
