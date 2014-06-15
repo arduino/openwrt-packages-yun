@@ -8,7 +8,7 @@ include $(TOPDIR)/rules.mk
 PKG_NAME:=gcc
 PKG_VERSION:=4.6.2
 PKG_RELEASE:=1
-PATCH_DIR=$(TOPDIR)/package/gcc/patches/
+PATCH_DIR=$(TOPDIR)/feeds/packages/devel/gcc/patches/
 PKG_SOURCE_URL:=ftp://ftp.fu-berlin.de/unix/languages/gcc/releases/gcc-$(PKG_VERSION) \
 	http://www.netgull.com/gcc/releases/gcc-$(PKG_VERSION) \
 	ftp://ftp.gnu.org/gnu/gcc/gcc-$(PKG_VERSION)
@@ -37,7 +37,7 @@ define Build/Prepare
 		$(STAGING_DIR)/bin/mips-openwrt-linux-cc
 	cd $(PKG_BUILD_DIR);$(PKG_BUILD_DIR)/contrib/download_prerequisites
 # Since OpenWrt has already applied patches we have to do this one ourself
-	cd $(PKG_BUILD_DIR)/mpfr-2.4.2;cp $(TOPDIR)/package/gcc/mpfrpatch ./mpfrpatch;patch mpfr-longlong.h < mpfrpatch
+	cd $(PKG_BUILD_DIR)/mpfr-2.4.2;cp $(TOPDIR)/feeds/packages/devel/gcc/mpfrpatch ./mpfrpatch;patch mpfr-longlong.h < mpfrpatch
 
 endef
 #	rm -rf $(BUILD_DIR)/gccObjdir
