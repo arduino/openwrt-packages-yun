@@ -17,6 +17,7 @@ PKG_SOURCE:=$(PKG_NAME)-$(PKG_VERSION).tar.bz2
 PKG_MD5SUM:=028115c4fbfb6cfd75d6369f4a90d87e
 PKG_BUILD_DIR := $(BUILD_DIR)/$(PKG_NAME)-$(PKG_VERSION)
 
+# There should be a depend that prevents this being used if not compiling for a Yun
 include $(INCLUDE_DIR)/package.mk
 RSTRIP := true
 define Package/gcc
@@ -40,8 +41,6 @@ define Build/Prepare
 	cd $(PKG_BUILD_DIR)/mpfr-2.4.2;cp $(TOPDIR)/feeds/packages/devel/gcc/mpfrpatch ./mpfrpatch;patch mpfr-longlong.h < mpfrpatch
 
 endef
-#	rm -rf $(BUILD_DIR)/gccObjdir
-#	mkdir $(BUILD_DIR)/gccObjdir
 
 define Build/Configure	
 #TODO change this to use OpenWrt's normal configure procedure	
@@ -59,12 +58,12 @@ endef
 
 define Build/Compile
 	cd $(PKG_BUILD_DIR)/../$(PKG_NAME)-$(PKG_VERSION)objdir;\
-		env -i - PATH=$(PATH) STAGING_DIR=$(STAGING_DIR) make -j 7 V=s;\
-		make -j 7 V=s install
+		env -i - PATH=$(PATH) STAGING_DIR=$(STAGING_DIR) make;\
+		make install
 		
-#		DESTDIR="$(PKG_INSTALL_DIR)" $(MAKE_ARGS) all install
+#this is a better place to install from 
+#DESTDIR="$(PKG_INSTALL_DIR)" $(MAKE_ARGS) all install
 endef
-#		env -i - PATH=$(PATH) STAGING_DIR=$(STAGING_DIR) make -j 7 V=s install
 
 define Package/gcc/install
 	$(INSTALL_DIR) $(1)/usr/lib/
@@ -91,32 +90,5 @@ define Package/gcc/install
 	cp $(TOPDIR)/build_dir/toolchain-mips_r2_gcc-4.6-linaro_uClibc-0.9.33.2/gcc-linaro-4.6-2012.02/fixincludes/tests/base/stdio.h $(1)/usr/include/
 
 endef
-
-#	cp $(TOOLCHAIN_DIR)/lib/* $(1)/usr/lib/
-
-
-#	--prefix="$(PKG_INSTALL_DIR)" \
-
-#	for i in $(TOOLCHAIN_DIR)/4.6.3/*.o $(TOOLCHAIN_DIR)/4.6.3/*.a;\
-#	do;\
-#	ln -s $i .;\
-#	done
-#define Package/gcc/install
-#	$(INSTALL_DIR) $(1)/usr/lib/
-#	cp -r $(PKG_INSTALL_DIR)/* $(1)
-#	cp -r $(TOOLCHAIN_DIR)/include $(1)/usr/
-#	cp $(TOOLCHAIN_DIR)/lib/crt* $(1)/usr/lib/
-#	cp $(TOOLCHAIN_DIR)/lib/libc.so $(1)/usr/lib/
-#endef
-
-#define Package/gcc/install
-#	$(INSTALL_DIR) $(1)/usr/bin/
-#	$(INSTALL_DIR) $(1)/usr/lib/
-#	$(INSTALL_DIR) $(1)/usr/libexec/
-#	$(INSTALL_DIR) $(1)/usr/include/
-#	$(INSTALL_DIR) $(1)/usr/include/test
-#	cp $(HOME)/gccforYun/usr/bin/* $(1)/usr/bin/
-#	echo $(INSTALL_DIR)
-#endef
 
 $(eval $(call BuildPackage,gcc))
