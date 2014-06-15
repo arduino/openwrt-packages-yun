@@ -7,31 +7,31 @@
 
 include $(TOPDIR)/rules.mk
 
-PKG_NPM_NAME:=serialport
+PKG_NPM_NAME:=ws
 PKG_NAME:=node-$(PKG_NPM_NAME)
-PKG_VERSION:=1.4.0
+PKG_VERSION:=0.4.31
 PKG_RELEASE:=1
 
 PKG_SOURCE:=$(PKG_NPM_NAME)-$(PKG_VERSION).tgz
 PKG_SOURCE_URL:=http://registry.nodejitsu.com/$(PKG_NPM_NAME)/-/
-PKG_MD5SUM:=60e0c8577596d3f925df48ed8c5e0dc4
+PKG_MD5SUM:=b56789bfa23f3c4a652e18921f2f5fb3
 
 PKG_BUILD_DEPENDS:=node
 PKG_NODE_VERSION:=0.10.28
 
 include $(INCLUDE_DIR)/package.mk
 
-define Package/node-serialport
+define Package/node-ws
   DEPENDS:=+node
   SUBMENU:=Node.js
   SECTION:=lang
   CATEGORY:=Languages
-  TITLE:=Node.js package to access serial ports for reading and writing
-  URL:=https://www.npmjs.org/package/serialport
+  TITLE:=Simple to use, blazing fast and thoroughly tested websocket client
+  URL:=https://www.npmjs.org/package/ws
 endef
 
-define Package/node-serialport/description
- Node.js package to access serial ports for reading and writing OR Welcome your robotic JavaScript overlords. Better yet, program them!
+define Package/node-ws/description
+ Simple to use, blazing fast and thoroughly tested websocket client, server and console for node.js, up-to-date against RFC-6455
 endef
 
 define Build/Prepare
@@ -55,10 +55,10 @@ define Build/Compile
 	npm install -g $(PKG_BUILD_DIR)
 endef
 
-define Package/node-serialport/install
+define Package/node-ws/install
 	mkdir -p $(1)/usr/lib/
 	$(CP) $(PKG_INSTALL_DIR)/usr/lib/node_modules $(1)/usr/lib/
 endef
 
-$(eval $(call BuildPackage,node-serialport))
+$(eval $(call BuildPackage,node-ws))
 

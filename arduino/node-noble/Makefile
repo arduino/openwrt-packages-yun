@@ -7,31 +7,31 @@
 
 include $(TOPDIR)/rules.mk
 
-PKG_NPM_NAME:=serialport
+PKG_NPM_NAME:=noble
 PKG_NAME:=node-$(PKG_NPM_NAME)
-PKG_VERSION:=1.4.0
+PKG_VERSION:=0.3.0
 PKG_RELEASE:=1
 
 PKG_SOURCE:=$(PKG_NPM_NAME)-$(PKG_VERSION).tgz
 PKG_SOURCE_URL:=http://registry.nodejitsu.com/$(PKG_NPM_NAME)/-/
-PKG_MD5SUM:=60e0c8577596d3f925df48ed8c5e0dc4
+PKG_MD5SUM:=9d96b4c861e448950951ede1b3f433f8
 
 PKG_BUILD_DEPENDS:=node
 PKG_NODE_VERSION:=0.10.28
 
 include $(INCLUDE_DIR)/package.mk
 
-define Package/node-serialport
-  DEPENDS:=+node
+define Package/node-noble
+  DEPENDS:=+node +node-ws +bluez-libs
   SUBMENU:=Node.js
   SECTION:=lang
   CATEGORY:=Languages
-  TITLE:=Node.js package to access serial ports for reading and writing
-  URL:=https://www.npmjs.org/package/serialport
+  TITLE:=A node.js BLE (Bluetooth low energy) central library.
+  URL:=https://www.npmjs.org/package/noble
 endef
 
-define Package/node-serialport/description
- Node.js package to access serial ports for reading and writing OR Welcome your robotic JavaScript overlords. Better yet, program them!
+define Package/node-noble/description
+ A node.js BLE (Bluetooth low energy) central library.
 endef
 
 define Build/Prepare
@@ -48,6 +48,8 @@ define Build/Compile
 	LD="$(TOOLCHAIN_DIR)/bin/mips-openwrt-linux-g++" \
 	PATH="/usr/bin/:$(PATH)" \
 	GYPFLAGS="-Dv8_use_mips_abi_hardfloat=false -Dv8_can_use_fpu_instructions=false" \
+        CFLAGS="$(TARGET_CFLAGS) $(EXTRA_CFLAGS) $(TARGET_CPPFLAGS) $(EXTRA_CPPFLAGS)" \
+        CXXFLAGS="$(TARGET_CXXFLAGS) $(EXTRA_CXXFLAGS) $(TARGET_CPPFLAGS) $(EXTRA_CPPFLAGS)" \
 	LDFLAGS="-L$(TOOLCHAIN_DIR)/lib/ -Wl,-rpath-link $(TOOLCHAIN_DIR)/lib/" \
 	npm_config_arch=mips \
 	npm_config_nodedir=$(BUILD_DIR)/node-v$(PKG_NODE_VERSION)/ \
@@ -55,10 +57,11 @@ define Build/Compile
 	npm install -g $(PKG_BUILD_DIR)
 endef
 
-define Package/node-serialport/install
+define Package/node-noble/install
 	mkdir -p $(1)/usr/lib/
 	$(CP) $(PKG_INSTALL_DIR)/usr/lib/node_modules $(1)/usr/lib/
+	rm -rf $(1)/usr/lib/node_modules/$(PKG_NPM_NAME)/node_modules/ws
 endef
 
-$(eval $(call BuildPackage,node-serialport))
+$(eval $(call BuildPackage,node-noble))
 
