@@ -18,6 +18,7 @@ PKG_MD5SUM:=028115c4fbfb6cfd75d6369f4a90d87e
 PKG_BUILD_DIR := $(BUILD_DIR)/$(PKG_NAME)-$(PKG_VERSION)
 
 # There should be a depend that prevents this being used if not compiling for a Yun
+# Should we depend on binutils?
 include $(INCLUDE_DIR)/package.mk
 RSTRIP := true
 define Package/gcc
@@ -31,19 +32,20 @@ define Package/gcc/description
 	build a native toolchain for compiling on target
 endef
 
+# The link for cc should really be done in the toolchain installation, not here.
+# Since OpenWrt has already applied patches we have to do mpfr ourself after running download_prerequisites
 define Build/Prepare
 	$(call Build/Prepare/Default)
-# This should really be done in the toolchain installation, not here.
 	ln -sf $(STAGING_DIR)/bin/mips-openwrt-linux-gcc  \
 		$(STAGING_DIR)/bin/mips-openwrt-linux-cc
 	cd $(PKG_BUILD_DIR);$(PKG_BUILD_DIR)/contrib/download_prerequisites
-# Since OpenWrt has already applied patches we have to do this one ourself
 	cd $(PKG_BUILD_DIR)/mpfr-2.4.2;cp $(TOPDIR)/feeds/packages/devel/gcc/mpfrpatch ./mpfrpatch;patch mpfr-longlong.h < mpfrpatch
 
 endef
 
-define Build/Configure	
 #TODO change this to use OpenWrt's normal configure procedure	
+#TODO change this to use the normal ipkg installation directory
+define Build/Configure	
 	(mkdir $(PKG_BUILD_DIR)/../$(PKG_NAME)-$(PKG_VERSION)objdir;cd $(PKG_BUILD_DIR)/../$(PKG_NAME)-$(PKG_VERSION)objdir;CFLAGS="-g -O2";CFLAGS_FOR_TARGET="-g -O2";../$(PKG_NAME)-$(PKG_VERSION)/configure \
 		--host=mips-openwrt-linux-uclibc \
 		--target=mips-openwrt-linux-uclibc \
@@ -56,15 +58,17 @@ define Build/Configure
 endef
 
 
+		
+#this is a better place to install from 
+#DESTDIR="$(PKG_INSTALL_DIR)" $(MAKE_ARGS) all install
 define Build/Compile
 	cd $(PKG_BUILD_DIR)/../$(PKG_NAME)-$(PKG_VERSION)objdir;\
 		env -i - PATH=$(PATH) STAGING_DIR=$(STAGING_DIR) make;\
 		make install
-		
-#this is a better place to install from 
-#DESTDIR="$(PKG_INSTALL_DIR)" $(MAKE_ARGS) all install
 endef
 
+# TODO While we can't strip some of the libraries much of this can be stripped,
+# TODO selectively stripping the things that can be would reduce space usage. 
 define Package/gcc/install
 	$(INSTALL_DIR) $(1)/usr/lib/
 	$(INSTALL_DIR) $(1)/usr/bin/
