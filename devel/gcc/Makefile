@@ -61,6 +61,8 @@ endef
 		
 #this is a better place to install from 
 #DESTDIR="$(PKG_INSTALL_DIR)" $(MAKE_ARGS) all install
+#OpenWrt sets environment variables that kill the build so we use env to 
+#a clean state and set only what is needed
 define Build/Compile
 	cd $(PKG_BUILD_DIR)/../$(PKG_NAME)-$(PKG_VERSION)objdir;\
 		env -i - PATH=$(PATH) STAGING_DIR=$(STAGING_DIR) make;\
