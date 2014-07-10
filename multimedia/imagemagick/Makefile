@@ -130,10 +130,37 @@ endef
 define Package/imagemagick-tools/install
 	$(INSTALL_DIR) $(1)/usr/bin/
 	$(CP) \
-		$(PKG_INSTALL_DIR)/usr/bin/mogrify \
+		$(PKG_INSTALL_DIR)/usr/bin/animate \
+		$(1)/usr/bin/
+	$(CP) \
+		$(PKG_INSTALL_DIR)/usr/bin/compare \
+		$(1)/usr/bin/
+	$(CP) \
+		$(PKG_INSTALL_DIR)/usr/bin/composite \
+		$(1)/usr/bin/
+	$(CP) \
+		$(PKG_INSTALL_DIR)/usr/bin/conjure \
 		$(1)/usr/bin/
 	$(CP) \
 		$(PKG_INSTALL_DIR)/usr/bin/convert \
+		$(1)/usr/bin/
+	$(CP) \
+		$(PKG_INSTALL_DIR)/usr/bin/display \
+		$(1)/usr/bin/
+	$(CP) \
+		$(PKG_INSTALL_DIR)/usr/bin/identify \
+		$(1)/usr/bin/
+	$(CP) \
+		$(PKG_INSTALL_DIR)/usr/bin/import \
+		$(1)/usr/bin/
+	$(CP) \
+		$(PKG_INSTALL_DIR)/usr/bin/mogrify \
+		$(1)/usr/bin/
+	$(CP) \
+		$(PKG_INSTALL_DIR)/usr/bin/montage \
+		$(1)/usr/bin/
+	$(CP) \
+		$(PKG_INSTALL_DIR)/usr/bin/stream \
 		$(1)/usr/bin/
 endef
 
