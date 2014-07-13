@@ -5,10 +5,10 @@
 # See /LICENSE for more information.
 #
 include $(TOPDIR)/rules.mk
-PKG_NAME:=gcc
+PKG_NAME:=yun-gcc
 PKG_VERSION:=4.6.2
 PKG_RELEASE:=1
-PATCH_DIR=$(TOPDIR)/feeds/packages/devel/gcc/patches/
+PATCH_DIR=$(TOPDIR)/feeds/packages/devel/yun-gcc/patches/
 PKG_SOURCE_URL:=ftp://ftp.fu-berlin.de/unix/languages/gcc/releases/gcc-$(PKG_VERSION) \
 	http://www.netgull.com/gcc/releases/gcc-$(PKG_VERSION) \
 	ftp://ftp.gnu.org/gnu/gcc/gcc-$(PKG_VERSION)
@@ -21,14 +21,14 @@ PKG_BUILD_DIR := $(BUILD_DIR)/$(PKG_NAME)-$(PKG_VERSION)
 # Should we depend on binutils?
 include $(INCLUDE_DIR)/package.mk
 RSTRIP := true
-define Package/gcc
+define Package/yun-gcc
   SECTION:=devel
   CATEGORY:=Development
-  TITLE:=native gcc
+  TITLE:=native gcc for the Arduino yun
   DEPENDS:= +libpthread 
 endef
 
-define Package/gcc/description
+define Package/yun-gcc/description
 	build a native toolchain for compiling on target
 endef
 
@@ -39,7 +39,7 @@ define Build/Prepare
 	ln -sf $(STAGING_DIR)/bin/mips-openwrt-linux-gcc  \
 		$(STAGING_DIR)/bin/mips-openwrt-linux-cc
 	cd $(PKG_BUILD_DIR);$(PKG_BUILD_DIR)/contrib/download_prerequisites
-	cd $(PKG_BUILD_DIR)/mpfr-2.4.2;cp $(TOPDIR)/feeds/packages/devel/gcc/mpfrpatch ./mpfrpatch;patch mpfr-longlong.h < mpfrpatch
+	cd $(PKG_BUILD_DIR)/mpfr-2.4.2;cp $(TOPDIR)/feeds/packages/devel/yun-gcc/mpfrpatch ./mpfrpatch;patch mpfr-longlong.h < mpfrpatch
 
 endef
 
@@ -71,7 +71,7 @@ endef
 
 # TODO While we can't strip some of the libraries much of this can be stripped,
 # TODO selectively stripping the things that can be would reduce space usage. 
-define Package/gcc/install
+define Package/yun-gcc/install
 	$(INSTALL_DIR) $(1)/usr/lib/
 	$(INSTALL_DIR) $(1)/usr/bin/
 	$(INSTALL_DIR) $(1)/usr/libexec/
@@ -97,4 +97,4 @@ define Package/gcc/install
 
 endef
 
-$(eval $(call BuildPackage,gcc))
+$(eval $(call BuildPackage,yun-gcc))
