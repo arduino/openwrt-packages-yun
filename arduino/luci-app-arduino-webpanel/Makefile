@@ -8,12 +8,12 @@
 include $(TOPDIR)/rules.mk
 
 PKG_NAME:=luci-app-arduino-webpanel
-PKG_VERSION:=1.2.1
-PKG_RELEASE:=2
+PKG_VERSION:=1.3
+PKG_RELEASE:=1
 
 PKG_SOURCE:=$(PKG_NAME)-$(PKG_VERSION).tar.bz2
 PKG_SOURCE_URL:=http://downloads.arduino.cc/
-PKG_MD5SUM:=e210d8a8cffa1c417e3858de6debf98f
+PKG_MD5SUM:=2a34ef71bfdf518f2dc4cb558fa1f1f7
 
 include $(INCLUDE_DIR)/package.mk
 
