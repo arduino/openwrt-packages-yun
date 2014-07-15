@@ -9,7 +9,7 @@ include $(TOPDIR)/rules.mk
 
 PKG_NAME:=luci-app-arduino-webpanel
 PKG_VERSION:=1.2.1
-PKG_RELEASE:=1
+PKG_RELEASE:=2
 
 PKG_SOURCE:=$(PKG_NAME)-$(PKG_VERSION).tar.bz2
 PKG_SOURCE_URL:=http://downloads.arduino.cc/
@@ -22,7 +22,7 @@ define Package/luci-app-arduino-webpanel
   CATEGORY:=LuCI
   SUBMENU:=3. Applications
   TITLE:= simplified wifi configuration panel
-  DEPENDS:=+luci +luci-lib-json +uhttpd-mod-lua
+  DEPENDS:=+luci +luci-lib-json +uhttpd-mod-lua +yun-scripts
 endef
 
 define Package/luci-app-arduino-webpanel/description
