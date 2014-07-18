@@ -17,6 +17,7 @@ define Package/yun-scripts
   SECTION:=utils
   CATEGORY:=Base system
   TITLE:=Custom Yún scripts
+  DEPENDS:=+kmod-loop
 endef
 
 define Build/Compile
