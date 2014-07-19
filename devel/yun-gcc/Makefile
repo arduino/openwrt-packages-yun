@@ -13,7 +13,7 @@ PKG_SOURCE_URL:=ftp://ftp.fu-berlin.de/unix/languages/gcc/releases/gcc-$(PKG_VER
 	http://www.netgull.com/gcc/releases/gcc-$(PKG_VERSION) \
 	ftp://ftp.gnu.org/gnu/gcc/gcc-$(PKG_VERSION)
 
-PKG_SOURCE:=$(PKG_NAME)-$(PKG_VERSION).tar.bz2
+PKG_SOURCE:=gcc-$(PKG_VERSION).tar.bz2
 PKG_MD5SUM:=028115c4fbfb6cfd75d6369f4a90d87e
 PKG_BUILD_DIR := $(BUILD_DIR)/$(PKG_NAME)-$(PKG_VERSION)
 
@@ -34,27 +34,31 @@ endef
 
 # The link for cc should really be done in the toolchain installation, not here.
 # Since OpenWrt has already applied patches we have to do mpfr ourself after running download_prerequisites
-define Build/Prepare
-	$(call Build/Prepare/Default)
+define Build/Prepare 
+	/bin/tar xjf $(DL_DIR)/$(PKG_SOURCE)  -C $(BUILD_DIR)
+	mv $(BUILD_DIR)/gcc-$(PKG_VERSION)/* $(PKG_BUILD_DIR)
 	ln -sf $(STAGING_DIR)/bin/mips-openwrt-linux-gcc  \
 		$(STAGING_DIR)/bin/mips-openwrt-linux-cc
 	cd $(PKG_BUILD_DIR);$(PKG_BUILD_DIR)/contrib/download_prerequisites
-	cd $(PKG_BUILD_DIR)/mpfr-2.4.2;cp $(TOPDIR)/feeds/packages/devel/yun-gcc/mpfrpatch ./mpfrpatch;patch mpfr-longlong.h < mpfrpatch
-
+	$(Build/Patch)
 endef
 
 #TODO change this to use OpenWrt's normal configure procedure	
 #TODO change this to use the normal ipkg installation directory
 define Build/Configure	
-	(mkdir $(PKG_BUILD_DIR)/../$(PKG_NAME)-$(PKG_VERSION)objdir;cd $(PKG_BUILD_DIR)/../$(PKG_NAME)-$(PKG_VERSION)objdir;CFLAGS="-g -O2";CFLAGS_FOR_TARGET="-g -O2";../$(PKG_NAME)-$(PKG_VERSION)/configure \
+	rm -rf $(PKG_BUILD_DIR)/../$(PKG_NAME)-$(PKG_VERSION)objdir 
+	mkdir $(PKG_BUILD_DIR)/../$(PKG_NAME)-$(PKG_VERSION)objdir
+	cd $(PKG_BUILD_DIR)/../$(PKG_NAME)-$(PKG_VERSION)objdir;\
+	CFLAGS="-g -O2";CFLAGS_FOR_TARGET="-g -O2";\
+	../$(PKG_NAME)-$(PKG_VERSION)/configure \
 		--host=mips-openwrt-linux-uclibc \
 		--target=mips-openwrt-linux-uclibc \
-		--prefix="$(STAGING_DIR)/nativeGcc" \
+		--prefix="$(STAGING_DIR)/yun-gcc" \
 		--disable-subdir-texinfo MAKEINFO=missing \
 		--disable-decimal-float \
 		--disable-libquadmath \
 		--disable-lto \
-		--enable-languages=c,c++ );
+		--enable-languages=c,c++ 
 endef
 
 
@@ -76,7 +80,7 @@ define Package/yun-gcc/install
 	$(INSTALL_DIR) $(1)/usr/bin/
 	$(INSTALL_DIR) $(1)/usr/libexec/
 	$(INSTALL_DIR) $(1)/usr/include/
-	(cd $(STAGING_DIR)/nativeGcc/lib/gcc/mips-openwrt-linux-uclibc/4.6.2/;\
+	(cd $(STAGING_DIR)/yun-gcc/lib/gcc/mips-openwrt-linux-uclibc/4.6.2/;\
 	ln -s -f ../4.6.3/crtbegin.o crtbegin.o;\
 	ln -s -f ../4.6.3/crtbeginS.o crtbeginS.o;\
 	ln -s -f ../4.6.3/crtbeginT.o crtbeginT.o;\
@@ -88,10 +92,10 @@ define Package/yun-gcc/install
 	ln -s -f ../4.6.3/libgcov.a libgcov.a);
 	
 
-	cp -r $(STAGING_DIR)/nativeGcc/bin/* $(1)/usr/bin/
+	cp -r $(STAGING_DIR)/yun-gcc/bin/* $(1)/usr/bin/
 	find $(TOOLCHAIN_DIR)/lib/ -maxdepth 1 -type f | xargs -I {} cp {} $(1)/usr/lib/
-	cp -r $(STAGING_DIR)/nativeGcc/libexec/* $(1)/usr/libexec/
-	cp -r $(STAGING_DIR)/nativeGcc/lib/* $(1)/usr/lib/
+	cp -r $(STAGING_DIR)/yun-gcc/libexec/* $(1)/usr/libexec/
+	cp -r $(STAGING_DIR)/yun-gcc/lib/* $(1)/usr/lib/
 	cp -r $(TOPDIR)/staging_dir/toolchain-mips_r2_gcc-4.6-linaro_uClibc-0.9.33.2/lib/* $(1)/usr/lib/
 	cp $(TOPDIR)/build_dir/toolchain-mips_r2_gcc-4.6-linaro_uClibc-0.9.33.2/gcc-linaro-4.6-2012.02/fixincludes/tests/base/stdio.h $(1)/usr/include/
 
