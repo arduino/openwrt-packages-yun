@@ -33,7 +33,6 @@ define Package/yun-gcc/description
 endef
 
 # The link for cc should really be done in the toolchain installation, not here.
-# Since OpenWrt has already applied patches we have to do mpfr ourself after running download_prerequisites
 define Build/Prepare 
 	/bin/tar xjf $(DL_DIR)/$(PKG_SOURCE)  -C $(BUILD_DIR)
 	mv $(BUILD_DIR)/gcc-$(PKG_VERSION)/* $(PKG_BUILD_DIR)
