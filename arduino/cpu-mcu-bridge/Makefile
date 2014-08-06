@@ -13,7 +13,7 @@ PKG_RELEASE:=1
 
 PKG_SOURCE:=$(PKG_NAME)-$(PKG_VERSION).tar.bz2
 PKG_SOURCE_URL:=http://downloads.arduino.cc/
-PKG_MD5SUM:=9d2e8cb704ecfecf0b8fbc0d3c6ef6c6
+PKG_MD5SUM:=6054665731cc0fdb9cd5fa45bfed818b
 
 include $(INCLUDE_DIR)/package.mk
 
