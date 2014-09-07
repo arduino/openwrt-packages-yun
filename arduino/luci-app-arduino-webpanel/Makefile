@@ -1,5 +1,5 @@
 #
-# Copyright (c) 2013 Arduino LLC. All right reserved.
+# Copyright (c) 2014 Arduino LLC. All right reserved.
 #
 # This is free software, licensed under the GNU General Public License v2.
 # See /LICENSE for more information.
@@ -8,12 +8,12 @@
 include $(TOPDIR)/rules.mk
 
 PKG_NAME:=luci-app-arduino-webpanel
-PKG_VERSION:=1.2.1
+PKG_VERSION:=1.4.3
 PKG_RELEASE:=1
 
 PKG_SOURCE:=$(PKG_NAME)-$(PKG_VERSION).tar.bz2
 PKG_SOURCE_URL:=http://downloads.arduino.cc/
-PKG_MD5SUM:=e210d8a8cffa1c417e3858de6debf98f
+PKG_MD5SUM:=748c88a346c0f7a49a1727f37951a1a7
 
 include $(INCLUDE_DIR)/package.mk
 
@@ -22,7 +22,7 @@ define Package/luci-app-arduino-webpanel
   CATEGORY:=LuCI
   SUBMENU:=3. Applications
   TITLE:= simplified wifi configuration panel
-  DEPENDS:=+luci +luci-lib-json +uhttpd-mod-lua
+  DEPENDS:=+luci +luci-lib-json +uhttpd-mod-lua +yun-scripts
 endef
 
 define Package/luci-app-arduino-webpanel/description

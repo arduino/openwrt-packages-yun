@@ -10,7 +10,7 @@ include $(TOPDIR)/rules.mk
 PKG_NAME:=imagemagick
 PKG_VERSION:=6.7.8
 PKG_REVISION:=10
-PKG_RELEASE:=1
+PKG_RELEASE:=2
 
 PKG_BUILD_DIR:=$(BUILD_DIR)/ImageMagick-$(PKG_VERSION)-$(PKG_REVISION)
 PKG_SOURCE:=ImageMagick-$(PKG_VERSION)-$(PKG_REVISION).tar.bz2
@@ -130,10 +130,37 @@ endef
 define Package/imagemagick-tools/install
 	$(INSTALL_DIR) $(1)/usr/bin/
 	$(CP) \
-		$(PKG_INSTALL_DIR)/usr/bin/mogrify \
+		$(PKG_INSTALL_DIR)/usr/bin/animate \
+		$(1)/usr/bin/
+	$(CP) \
+		$(PKG_INSTALL_DIR)/usr/bin/compare \
+		$(1)/usr/bin/
+	$(CP) \
+		$(PKG_INSTALL_DIR)/usr/bin/composite \
+		$(1)/usr/bin/
+	$(CP) \
+		$(PKG_INSTALL_DIR)/usr/bin/conjure \
 		$(1)/usr/bin/
 	$(CP) \
 		$(PKG_INSTALL_DIR)/usr/bin/convert \
+		$(1)/usr/bin/
+	$(CP) \
+		$(PKG_INSTALL_DIR)/usr/bin/display \
+		$(1)/usr/bin/
+	$(CP) \
+		$(PKG_INSTALL_DIR)/usr/bin/identify \
+		$(1)/usr/bin/
+	$(CP) \
+		$(PKG_INSTALL_DIR)/usr/bin/import \
+		$(1)/usr/bin/
+	$(CP) \
+		$(PKG_INSTALL_DIR)/usr/bin/mogrify \
+		$(1)/usr/bin/
+	$(CP) \
+		$(PKG_INSTALL_DIR)/usr/bin/montage \
+		$(1)/usr/bin/
+	$(CP) \
+		$(PKG_INSTALL_DIR)/usr/bin/stream \
 		$(1)/usr/bin/
 endef
 
