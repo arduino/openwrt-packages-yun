@@ -7,31 +7,31 @@
 
 include $(TOPDIR)/rules.mk
 
-PKG_NPM_NAME:=socket.io
-PKG_NAME:=node-$(PKG_NPM_NAME)
-PKG_VERSION:=1.1.0
+PKG_NPM_NAME:=socket.io-client
+PKG_NAME:=node-$(PKG_NPM_NAME)-legacy
+PKG_VERSION:=0.9.17
 PKG_RELEASE:=1
 
 PKG_SOURCE:=$(PKG_NPM_NAME)-$(PKG_VERSION).tgz
 PKG_SOURCE_URL:=http://registry.nodejitsu.com/$(PKG_NPM_NAME)/-/
-PKG_MD5SUM:=923ccada2c53d7b8561d4c0692b6b9f0
+PKG_MD5SUM:=ad19f7d8ab8602ffd499938675cc238d
 
 PKG_BUILD_DEPENDS:=node
 PKG_NODE_VERSION:=0.10.28
 
 include $(INCLUDE_DIR)/package.mk
 
-define Package/node-socket.io
-  DEPENDS:=+node +node-socket.io-client
+define Package/node-socket.io-client-legacy
+  DEPENDS:=+node +node-ws
   SUBMENU:=Node.js
   SECTION:=lang
   CATEGORY:=Languages
-  TITLE:=Real-time apps made cross-browser & easy with a WebSocket-like API
-  URL:=https://www.npmjs.org/package/socket.io
+  TITLE:=Socket.IO client for the browser and node.js
+  URL:=https://www.npmjs.org/package/socket.io-client
 endef
 
-define Package/node-socket.io/description
- Real-time apps made cross-browser & easy with a WebSocket-like API
+define Package/node-socket.io-client-legacy/description
+ Socket.IO client for the browser and node.js
 endef
 
 define Build/Prepare
@@ -55,11 +55,11 @@ define Build/Compile
 	npm install -g $(PKG_BUILD_DIR)
 endef
 
-define Package/node-socket.io/install
+define Package/node-socket.io-client-legacy/install
 	mkdir -p $(1)/usr/lib/
 	$(CP) $(PKG_INSTALL_DIR)/usr/lib/node_modules $(1)/usr/lib/
-	rm -rf $(1)/usr/lib/node_modules/$(PKG_NPM_NAME)/node_modules/socket.io-client
+	rm -rf $(1)/usr/lib/node_modules/$(PKG_NPM_NAME)/node_modules/ws
 endef
 
-$(eval $(call BuildPackage,node-socket.io))
+$(eval $(call BuildPackage,node-socket.io-client-legacy))
 
