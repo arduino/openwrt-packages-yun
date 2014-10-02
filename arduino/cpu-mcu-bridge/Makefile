@@ -1,5 +1,5 @@
 #
-# Copyright (c) 2013 Arduino LLC. All right reserved.
+# Copyright (c) 2014 Arduino LLC. All right reserved.
 #
 # This is free software, licensed under the GNU General Public License v2.
 # See /LICENSE for more information.
@@ -8,12 +8,12 @@
 include $(TOPDIR)/rules.mk
 
 PKG_NAME:=cpu-mcu-bridge
-PKG_VERSION:=1.4.0
+PKG_VERSION:=1.5.0
 PKG_RELEASE:=1
 
 PKG_SOURCE:=$(PKG_NAME)-$(PKG_VERSION).tar.bz2
 PKG_SOURCE_URL:=http://downloads.arduino.cc/
-PKG_MD5SUM:=6054665731cc0fdb9cd5fa45bfed818b
+PKG_MD5SUM:=083b331044f0843e5408ecb710c8b17e
 
 include $(INCLUDE_DIR)/package.mk
 
