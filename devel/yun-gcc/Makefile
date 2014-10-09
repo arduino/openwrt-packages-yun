@@ -96,7 +96,9 @@ define Package/yun-gcc/install
 	cp -r $(STAGING_DIR)/yun-gcc/libexec/* $(1)/usr/libexec/
 	cp -r $(STAGING_DIR)/yun-gcc/lib/* $(1)/usr/lib/
 	cp -r $(TOPDIR)/staging_dir/toolchain-mips_r2_gcc-4.6-linaro_uClibc-0.9.33.2/lib/* $(1)/usr/lib/
-	cp $(TOPDIR)/build_dir/toolchain-mips_r2_gcc-4.6-linaro_uClibc-0.9.33.2/gcc-linaro-4.6-2012.02/fixincludes/tests/base/stdio.h $(1)/usr/include/
+	cp -r $(TOPDIR)/staging_dir/target-mips_r2_uClibc-0.9.33.2/usr/lib/libusbpp.a $(1)/usr/lib/
+	cp -r $(TOPDIR)/build_dir/toolchain-mips_r2_gcc-4.6-linaro_uClibc-0.9.33.2/uClibc-dev/include/* $(1)/usr/include/
+	cp staging_dir/target-mips_r2_uClibc-0.9.33.2/usr/include/usb.h  $(1)/usr/include/
 
 endef
 
