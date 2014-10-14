@@ -9,7 +9,7 @@ include $(TOPDIR)/rules.mk
 
 PKG_NAME:=yun-conf
 PKG_VERSION:=1.2.0
-PKG_RELEASE:=1
+PKG_RELEASE:=2
 
 include $(INCLUDE_DIR)/package.mk
 
@@ -41,7 +41,6 @@ define Package/yun-conf/install
 
 	$(INSTALL_CONF) ./files/etc/httpd.conf $(1)/etc/
 	$(INSTALL_CONF) ./files/etc/config/arduino $(1)/etc/config/
-	#$(INSTALL_CONF) ./files/etc/config/dhcp $(1)/etc/config/dhcp.1
 
 	$(INSTALL_DATA) ./files/etc/arduino/Caterina-Yun.hex $(1)/etc/arduino/
 	$(INSTALL_CONF) ./files/etc/arduino/openwrt-yun-release $(1)/etc/arduino/
