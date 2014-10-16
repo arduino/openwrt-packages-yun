@@ -2,9 +2,15 @@
 
 UCI="/sbin/uci"
 
+ACCESS_POINT_NAME=`$UCI get "arduino.@arduino[0].access_point_wifi_name"`
+if [ "x$ACCESS_POINT_NAME" = "x" ]
+then
+	ACCESS_POINT_NAME="Arduino"
+fi
+
 $UCI set "wireless.radio0.channel=11"
 $UCI set "wireless.@wifi-iface[0].mode=ap"
-$UCI set "wireless.@wifi-iface[0].ssid=Arduino"
+$UCI set "wireless.@wifi-iface[0].ssid=$ACCESS_POINT_NAME"
 $UCI set "wireless.@wifi-iface[0].encryption=none"
 $UCI delete "wireless.@wifi-iface[0].key"
 $UCI delete "wireless.radio0.country"
@@ -12,6 +18,10 @@ $UCI delete "wireless.radio0.country"
 $UCI set "network.lan.ipaddr=192.168.240.1"
 $UCI set "network.lan.netmask=255.255.255.0"
 $UCI set "network.lan.proto=static"
+
+PREVIOUS_DNSMASQ_IFACE_LIST=`$UCI get "dhcp.@dnsmasq[0].interface"`
+$UCI del_list "dhcp.@dnsmasq[0].interface=$PREVIOUS_DNSMASQ_IFACE_LIST"
+$UCI add_list "dhcp.@dnsmasq[0].interface=lo,wlan0"
 
 #$UCI add_list "dhcp.@dnsmasq[0].address=/#/192.168.240.1"
 
