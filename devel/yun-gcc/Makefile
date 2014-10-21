@@ -7,13 +7,12 @@
 include $(TOPDIR)/rules.mk
 PKG_NAME:=yun-gcc
 PKG_VERSION:=4.6.2
-PKG_RELEASE:=1
+PKG_RELEASE:=2
 PATCH_DIR=$(TOPDIR)/feeds/packages/devel/yun-gcc/patches/
+PKG_SOURCE:=gcc-$(PKG_VERSION).tar.bz2
 PKG_SOURCE_URL:=ftp://ftp.fu-berlin.de/unix/languages/gcc/releases/gcc-$(PKG_VERSION) \
 	http://www.netgull.com/gcc/releases/gcc-$(PKG_VERSION) \
 	ftp://ftp.gnu.org/gnu/gcc/gcc-$(PKG_VERSION)
-
-PKG_SOURCE:=gcc-$(PKG_VERSION).tar.bz2
 PKG_MD5SUM:=028115c4fbfb6cfd75d6369f4a90d87e
 PKG_BUILD_DIR := $(BUILD_DIR)/$(PKG_NAME)-$(PKG_VERSION)
 
@@ -30,6 +29,7 @@ endef
 
 define Package/yun-gcc/description
 	build a native toolchain for compiling on target
+	please see this http://playground.arduino.cc/Hardware/Yun#Compiling_on_the_Yun before use
 endef
 
 # The link for cc should really be done in the toolchain installation, not here.
@@ -57,6 +57,11 @@ define Build/Configure
 		--disable-decimal-float \
 		--disable-libquadmath \
 		--disable-lto \
+		--disable-libgomp \
+		--disable-libmudflap \
+		--disable-multilib \
+		--disable-nls \
+		--with-float=soft \
 		--enable-languages=c,c++ 
 endef
 
@@ -98,7 +103,10 @@ define Package/yun-gcc/install
 	cp -r $(TOPDIR)/staging_dir/toolchain-mips_r2_gcc-4.6-linaro_uClibc-0.9.33.2/lib/* $(1)/usr/lib/
 	cp -r $(TOPDIR)/staging_dir/target-mips_r2_uClibc-0.9.33.2/usr/lib/libusbpp.a $(1)/usr/lib/
 	cp -r $(TOPDIR)/build_dir/toolchain-mips_r2_gcc-4.6-linaro_uClibc-0.9.33.2/uClibc-dev/include/* $(1)/usr/include/
-	cp staging_dir/target-mips_r2_uClibc-0.9.33.2/usr/include/usb.h  $(1)/usr/include/
+	cp -r $(TOPDIR)/build_dir/toolchain-mips_r2_gcc-4.6-linaro_uClibc-0.9.33.2/gcc-linaro-4.6-2012.02/libstdc++-v3/include/* $(1)/usr/include/
+	cp -r $(TOPDIR)/staging_dir/toolchain-mips_r2_gcc-4.6-linaro_uClibc-0.9.33.2/mips-openwrt-linux-uclibc/include/c++/4.6.3/mips-openwrt-linux-uclibc/* $(1)/usr/include/
+	cp -r $(TOPDIR)/staging_dir/toolchain-mips_r2_gcc-4.6-linaro_uClibc-0.9.33.2/mips-openwrt-linux-uclibc/include/c++/4.6.3/* $(1)/usr/include/
+	cp $(TOPDIR)/staging_dir/target-mips_r2_uClibc-0.9.33.2/usr/include/usb.h  $(1)/usr/include/
 
 endef
 
