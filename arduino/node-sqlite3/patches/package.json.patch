@@ -1,0 +1,11 @@
+--- a/package.json	2014-09-29 23:42:31.000000000 +0200
++++ b/package.json	2014-10-24 15:21:36.565737846 +0200
+@@ -51,7 +51,7 @@
+     },
+     "engineStrict": true,
+     "scripts": {
+-        "install": "node-pre-gyp install --fallback-to-build",
++        "install": "node-pre-gyp reinstall --build-from-source --target_arch=mips",
+         "pretest": "node test/support/createdb.js",
+         "test": "mocha -R spec --timeout 480000"
+     },
