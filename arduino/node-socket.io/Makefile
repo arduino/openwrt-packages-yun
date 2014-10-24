@@ -13,7 +13,7 @@ PKG_VERSION:=1.1.0
 PKG_RELEASE:=2
 
 PKG_SOURCE:=$(PKG_NPM_NAME)-$(PKG_VERSION).tgz
-PKG_SOURCE_URL:=http://registry.nodejitsu.com/$(PKG_NPM_NAME)/-/
+PKG_SOURCE_URL:=http://registry.npmjs.org/$(PKG_NPM_NAME)/-/
 PKG_MD5SUM:=923ccada2c53d7b8561d4c0692b6b9f0
 
 PKG_BUILD_DEPENDS:=node
