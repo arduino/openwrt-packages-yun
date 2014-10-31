@@ -1,6 +1,6 @@
 #!/bin/sh
 
-SWAPS=`swapon -s | grep file | wc -l`
+SWAPS=`swapon -s | grep -c "file\|partition"`
 
 if [ $SWAPS -gt 0 ]
 then
