@@ -1,0 +1,19 @@
+#!/bin/sh
+
+init_pids=$(pgrep init)
+shell_pids=$(pgrep ash)
+
+touch /tmp/block_init_askfirst
+
+#kill init and ash processes that have ttyATH0 opened
+for pid in $init_pids $shell_pids; do
+	blocks=$(ls -l /proc/$pid/fd/ | grep /dev/ttyATH0)
+	if [ "x$blocks" != "x" ]
+	then
+		kill $pid
+	fi
+done
+
+bossac $@
+
+rm /tmp/block_init_askfirst
