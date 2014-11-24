@@ -16,7 +16,7 @@ include $(TOPDIR)/rules.mk
 
 PKG_NAME:=ruby
 PKG_VERSION:=1.9.3-p429
-PKG_RELEASE:=1
+PKG_RELEASE:=2
 
 PKG_LIBVER:=1.9
 
@@ -50,7 +50,7 @@ endef
 define Package/ruby
 $(call Package/ruby/Default)
   TITLE+= (interpreter)
-  DEPENDS:=+libruby
+  DEPENDS:=+libruby +ruby-core
 endef
 
 define Package/ruby/description
@@ -108,7 +108,7 @@ endef
 define Package/ruby-gems
 $(call Package/ruby/Default)
   TITLE:=Ruby gems packet management
-  DEPENDS:=ruby +ruby-yaml +ruby-zlib +ruby-openssl +ruby-webrick +ruby-erb
+  DEPENDS:=ruby +ruby-yaml +ruby-zlib +ruby-openssl +ruby-webrick +ruby-erb +ruby-json +ruby-enc
 endef
 
 define Package/ruby-irb
