@@ -72,7 +72,7 @@ endef
 define Package/ruby-core
 $(call Package/ruby/Default)
   TITLE:=Ruby standard libraries
-  DEPENDS:=ruby +libdb47 +libffi
+  DEPENDS:=libdb47 +libffi
 endef
 
 define Package/ruby-cgi
