@@ -16,7 +16,7 @@ include $(TOPDIR)/rules.mk
 
 PKG_NAME:=ruby
 PKG_VERSION:=1.9.3-p429
-PKG_RELEASE:=2
+PKG_RELEASE:=3
 
 PKG_LIBVER:=1.9
 
@@ -455,9 +455,9 @@ define Build/InstallDev
 	) | ( cd $(1); $(TAR) -xf - )
 endef
 
-$(eval $(call BuildPackage,ruby))
 $(eval $(call BuildPackage,libruby))
 $(eval $(call BuildPackage,ruby-core))
+$(eval $(call BuildPackage,ruby))
 $(eval $(call BuildPackage,ruby-cgi))
 $(eval $(call BuildPackage,ruby-dl))
 $(eval $(call BuildPackage,ruby-enc))
