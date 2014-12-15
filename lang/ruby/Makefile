@@ -455,9 +455,9 @@ define Build/InstallDev
 	) | ( cd $(1); $(TAR) -xf - )
 endef
 
-$(eval $(call BuildPackage,ruby))
 $(eval $(call BuildPackage,libruby))
 $(eval $(call BuildPackage,ruby-core))
+$(eval $(call BuildPackage,ruby))
 $(eval $(call BuildPackage,ruby-cgi))
 $(eval $(call BuildPackage,ruby-dl))
 $(eval $(call BuildPackage,ruby-enc))
