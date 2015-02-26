@@ -15,14 +15,14 @@
 include $(TOPDIR)/rules.mk
 
 PKG_NAME:=ruby
-PKG_VERSION:=1.9.3-p429
-PKG_RELEASE:=2
+PKG_VERSION:=1.9.3-p551
+PKG_RELEASE:=1
 
 PKG_LIBVER:=1.9
 
 PKG_SOURCE:=$(PKG_NAME)-$(PKG_VERSION).tar.bz2
-PKG_SOURCE_URL:=ftp://ftp.ruby-lang.org/pub/ruby/$(PKG_LIBVER)/
-PKG_MD5SUM:=c2b2de5ef15ea9b1aaa3152f9112af1b
+PKG_SOURCE_URL:=http://ftp.ruby-lang.org/pub/ruby/$(PKG_LIBVER)/
+PKG_MD5SUM:=0d8b272b05c3449dc848bb7570f65bfe
 
 PKG_BUILD_DEPENDS:=ruby/host
 PKG_INSTALL:=1
@@ -50,7 +50,7 @@ endef
 define Package/ruby
 $(call Package/ruby/Default)
   TITLE+= (interpreter)
-  DEPENDS:=+libruby +ruby-core
+  DEPENDS:=+ruby-core
 endef
 
 define Package/ruby/description
@@ -72,7 +72,7 @@ endef
 define Package/ruby-core
 $(call Package/ruby/Default)
   TITLE:=Ruby standard libraries
-  DEPENDS:=ruby +libdb47 +libffi
+  DEPENDS:=+libruby +libdb47 +libffi
 endef
 
 define Package/ruby-cgi
