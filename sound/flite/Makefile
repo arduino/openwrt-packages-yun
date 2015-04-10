@@ -7,12 +7,13 @@
 include $(TOPDIR)/rules.mk
 
 PKG_NAME:=flite
-PKG_VERSION:=1.3-release
-PKG_RELEASE:=2
+PKG_VERSION:=1.4-release
+PKG_RELEASE:=1
 
 PKG_SOURCE:=$(PKG_NAME)-$(PKG_VERSION).tar.gz
-PKG_SOURCE_URL:=http://www.speech.cs.cmu.edu/flite/packed/flite-1.3/
-PKG_MD5SUM:=ae0aca1cb7b4801f4372f3a75a9e52b5
+PKG_SOURCE_URL:=http://www.speech.cs.cmu.edu/flite/packed/flite-1.4/
+PKG_MD5SUM:=b7c3523b3bbc6f29ce61e6650cd9a428
+PKG_CAT=bzcat
 
 PKG_BUILD_PARALLEL:=1
 PKG_INSTALL:=1
