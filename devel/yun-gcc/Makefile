@@ -62,6 +62,7 @@ define Build/Configure
 		--disable-multilib \
 		--disable-nls \
 		--with-float=soft \
+		--enable-libstdcxx-time
 		--enable-languages=c,c++ 
 endef
 
