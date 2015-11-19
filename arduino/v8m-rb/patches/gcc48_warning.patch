@@ -1,0 +1,14 @@
+diff --git a/build/standalone.gypi b/build/standalone.gypi
+index 9143ef0..c8f0746 100644
+--- a/build/standalone.gypi
++++ b/build/standalone.gypi
+@@ -95,7 +95,8 @@
+       'target_defaults': {
+         'cflags': [ '-Wall', '<(werror)', '-W', '-Wno-unused-parameter',
+                     '-Wnon-virtual-dtor', '-pthread', '-fno-rtti',
+-                    '-fno-exceptions', '-pedantic' ],
++                    '-fno-exceptions', '-pedantic',
++                    '-Wno-unused-local-typedefs' ],
+         'ldflags': [ '-pthread', ],
+         'conditions': [
+           [ 'OS=="linux"', {
