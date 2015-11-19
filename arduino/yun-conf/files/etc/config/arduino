@@ -3,6 +3,7 @@ config arduino
 	option secure_rest_api true
 	option socket_timeout 5
 	option access_point_wifi_name Arduino
+	option default_target arduino_yun
 
 config wifi-device 'radio0'
 
