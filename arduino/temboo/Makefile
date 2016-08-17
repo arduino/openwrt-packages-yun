@@ -8,12 +8,12 @@
 include $(TOPDIR)/rules.mk
 
 PKG_NAME:=temboo
-PKG_VERSION:=1.2.0
+PKG_VERSION:=1.3.0
 PKG_RELEASE:=1
 
 PKG_SOURCE:=$(PKG_NAME)-$(PKG_VERSION).tar.bz2
 PKG_SOURCE_URL:=http://downloads.arduino.cc/
-PKG_MD5SUM:=5ca4ba62e6b94f2f06959b1ad7eb65a4
+PKG_MD5SUM:=5013e52404e29579d29436d29c01b3aa
 
 include $(INCLUDE_DIR)/package.mk
 
@@ -35,8 +35,10 @@ endef
 define Package/temboo/install
 	$(INSTALL_DIR) $(1)/usr/bin
 
-	$(INSTALL_BIN) $(PKG_BUILD_DIR)/client/temboo $(1)/usr/bin
-	cp -r $(PKG_BUILD_DIR)/client/temboo-m2m $(1)/usr/bin
+	$(INSTALL_BIN) $(PKG_BUILD_DIR)/temboo $(1)/usr/bin
+	$(INSTALL_BIN) $(PKG_BUILD_DIR)/tembooMessaging $(1)/usr/bin
+	cp -r $(PKG_BUILD_DIR)/temboo-m2m $(1)/usr/bin
+	cp -r $(PKG_BUILD_DIR)/ws4py $(1)/usr/bin
 endef
 
 $(eval $(call BuildPackage,temboo))
