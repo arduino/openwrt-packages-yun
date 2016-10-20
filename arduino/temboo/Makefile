@@ -8,12 +8,12 @@
 include $(TOPDIR)/rules.mk
 
 PKG_NAME:=temboo
-PKG_VERSION:=1.3.1
+PKG_VERSION:=1.4.0
 PKG_RELEASE:=1
 
 PKG_SOURCE:=$(PKG_NAME)-$(PKG_VERSION).tar.bz2
 PKG_SOURCE_URL:=http://downloads.arduino.cc/
-PKG_MD5SUM:=c7389ad499376f32b2fed74a8a9d7dba
+PKG_MD5SUM:=3e1074dd12a15ca5407167df48c2f5c5
 
 include $(INCLUDE_DIR)/package.mk
 
