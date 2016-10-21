@@ -59,7 +59,8 @@ endef
 
 define Package/avrdude/install
 	$(INSTALL_DIR) $(1)/etc
-	$(INSTALL_CONF) ./files/avrdude.conf $(1)/etc/
+	$(INSTALL_CONF) ./files/avrdude_yun.conf $(1)/etc/
+	$(INSTALL_CONF) ./files/avrdude_nuy.conf $(1)/etc/
 	$(INSTALL_DIR) $(1)/usr/bin
 	$(INSTALL_BIN) $(PKG_BUILD_DIR)/avrdude $(1)/usr/bin/
 endef

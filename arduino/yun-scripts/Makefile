@@ -48,6 +48,8 @@ define Package/yun-scripts/install
 	$(INSTALL_BIN) ./files/usr/bin/upgrade-all $(1)/usr/bin
 	$(INSTALL_BIN) ./files/usr/bin/extract-built-date $(1)/usr/bin
 	$(INSTALL_BIN) ./files/usr/bin/extract-built-date-from-sysupgrade-image $(1)/usr/bin
+	$(INSTALL_BIN) ./files/usr/bin/get-gpio-conf $(1)/usr/bin
+	$(INSTALL_BIN) ./files/usr/bin/run-bossac $(1)/usr/bin
 
 	$(INSTALL_BIN) ./files/etc/init.d/rename-wifi-if-access-point $(1)/etc/init.d
 	$(INSTALL_BIN) ./files/etc/init.d/generate_new_gpg_key $(1)/etc/init.d

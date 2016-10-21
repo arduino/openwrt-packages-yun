@@ -1,0 +1,22 @@
+#!/bin/sh
+
+# Resolve differences between different GPIO configurations
+
+. /lib/ar71xx.sh
+
+case $(ar71xx_board_name) in
+nuy)
+	GPIO_MCU_RESET=12
+	GPIO_SPI_OE=22
+	GPIO_HANDSHAKE_OE=16
+	GPIO_UART_OE=17
+	AVRDUDE_CONF="/etc/avrdude_nuy.conf"
+	;;
+yun)
+	GPIO_MCU_RESET=18
+	GPIO_SPI_OE=21
+	GPIO_HANDSHAKE_OE=22
+	GPIO_UART_OE=23
+	AVRDUDE_CONF="/etc/avrdude_yun.conf"
+	;;
+esac

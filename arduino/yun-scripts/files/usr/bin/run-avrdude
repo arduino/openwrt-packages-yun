@@ -1,13 +1,15 @@
 #!/bin/sh
 
-echo 1 > /sys/class/gpio/gpio21/value
-avrdude  -q -q -c linuxgpio -C /etc/avrdude.conf -p m32u4 -U efuse:r:/tmp/efuse:d
+source /usr/bin/get-gpio-conf
+
+echo 1 > /sys/class/gpio/gpio$GPIO_SPI_OE/value
+avrdude  -q -q -c linuxgpio -C $AVRDUDE_CONF -p m32u4 -U efuse:r:/tmp/efuse:d
 read EFUSE < /tmp/efuse
 rm -f /tmp/efuse
 if [ "x$EFUSE" = "x203" ] # 203 = 0xCB
 then
-	avrdude -c linuxgpio -C /etc/avrdude.conf -p m32u4 -U lfuse:w:0xFF:m -U hfuse:w:0xD8:m -U efuse:w:0xCB:m -Uflash:w:$1:i $2
+	avrdude -c linuxgpio -C $AVRDUDE_CONF -p m32u4 -U lfuse:w:0xFF:m -U hfuse:w:0xD8:m -U efuse:w:0xCB:m -Uflash:w:$1:i $2
 else
-	avrdude -c linuxgpio -C /etc/avrdude.conf -p m32u4 -U lfuse:w:0xFF:m -U hfuse:w:0xD8:m -U efuse:w:0xFB:m -Uflash:w:$1:i $2
+	avrdude -c linuxgpio -C $AVRDUDE_CONF -p m32u4 -U lfuse:w:0xFF:m -U hfuse:w:0xD8:m -U efuse:w:0xFB:m -Uflash:w:$1:i $2
 fi
-echo 0 > /sys/class/gpio/gpio21/value
+echo 0 > /sys/class/gpio/gpio$GPIO_SPI_OE/value

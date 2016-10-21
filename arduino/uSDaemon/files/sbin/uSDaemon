@@ -11,6 +11,7 @@
 # 'block-mount' package within OpenWRT
 
 . /lib/functions/post_mount.sh
+. /lib/ar71xx.sh
 
 TIME=2
 
@@ -66,8 +67,11 @@ umount_disconnected_devices()
 }
 
 while [ true ]; do
-	umount_disconnected_devices
-	update_connected_devices
+	case $(ar71xx_board_name) in
+	yun)
+		umount_disconnected_devices
+		update_connected_devices
+	;;
+	esac
 	sleep $TIME
 done
-
